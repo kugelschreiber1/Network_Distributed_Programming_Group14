@@ -6,13 +6,13 @@ Should a group member want to contribute then please create your own branch and 
 Do not push changes to the main branch directly
 
 ## HOW TO RUN THE SERVER_CLIENT PROGRAM
-### 1.Navigate to the 'server' directory in the 'server_and_client' directory and run the following command in a terminal window:
+### 1.Navigate to the 'server' directory in the 'server_and_client' directory and run the following command in a terminal window
 	
-	`./server server_port`
+	```./server server_port```
 	
-### 2.Navigate to the 'client' directory in the 'server_and_client' directory and run the following command in a new terminal window:
+### 2.Navigate to the 'client' directory in the 'server_and_client' directory and run the following command in a new terminal window
 
-	`./client ip_address server_port`
+	```./client ip_address server_port```
 
 ### 3.Follow the prompts in the client window
 ### 4.The data will be saved in the 'records.txt' file

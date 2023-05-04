@@ -3,10 +3,13 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <stdlib.h> // added for fork()
 
+// define macros
 #define MAX_NAME_LENGTH 50
 #define MAX_RECORDS 1000
 
+// create a structure to hold the student data
 struct Record
 {
     int sequence_num;
@@ -45,6 +48,20 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    // check if file is empty and add headers
+    fseek(fp, 0L, SEEK_END);
+    if (ftell(fp) == 0)
+    {
+        fprintf(fp, "SNo\tAdmissionNo\tName\n");
+        fflush(fp);
+    }
+    else
+    {
+        // rewind file pointer to beginning of file
+        fseek(fp, 0L, SEEK_SET);
+    }
+
+
     // read existing records from file
     while (!feof(fp))
     {
@@ -61,6 +78,9 @@ int main(int argc, char *argv[])
     int server_fd, new_socket;
     struct sockaddr_in address;
     int addrlen = sizeof(address);
+
+    // Create the child process id
+    pid_t child_pid;
 
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
     {
@@ -87,10 +107,10 @@ int main(int argc, char *argv[])
     }
 
     // handle incoming records
+    printf("Waiting for incoming connections from a client...\n");
+
     while (1)
     {
-        printf("Waiting for incoming connections from a client...\n");
-
         // accept connection
         if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0)
         {
@@ -98,35 +118,57 @@ int main(int argc, char *argv[])
             return 1;
         }
 
-        // read record from client
-        struct Record new_record;
-        read(new_socket, &new_record, sizeof(new_record));
+         printf("A client has connected to the server\n");
 
-        // check for duplicates and save record to file
-        int is_record_duplicate = is_duplicate(records, num_records, new_record.sequence_num, new_record.admission_num);
-        if ( is_record_duplicate == 1)
+        // call the fork function to create a new child process
+        child_pid = fork();
+
+        if(child_pid == 0)
         {
-            printf("Duplicate record found! Not saving record.\n");
+            // Closing the server socket id
+            close(server_fd);
+    
+            // read record from client
+            struct Record new_record;
+            read(new_socket, &new_record, sizeof(new_record));
+
+            // check for duplicates and save record to file
+            int is_record_duplicate = is_duplicate(records, num_records, new_record.sequence_num, new_record.admission_num);
+            if ( is_record_duplicate == 1)
+            {
+                printf("Duplicate record found! Not saving record.\n");
+            }
+            else
+            {
+                records[num_records] = new_record;
+                num_records++;
+                // save record to file
+                fprintf(fp, "%d\t%s\t%s\n", new_record.sequence_num, new_record.admission_num, new_record.name);
+                fflush(fp);
+
+                printf("Record saved successfully.\n");
+            }
+
+            // assign the duplicate record check results to the response then send response to the client
+            int response = is_record_duplicate;
+            write(new_socket, &response, sizeof(response)); 
+
+            // close connection to the client when child process is done and exit
+            close(new_socket);
+            exit(EXIT_SUCCESS);
         }
-        else
+
+        else if(child_pid < 0)
         {
-            records[num_records] = new_record;
-            num_records++;
-            // save record to file
-            fprintf(fp, "%d,%s,%s\n", new_record.sequence_num, new_record.admission_num, new_record.name);
-            fflush(fp);
-
-            printf("Record saved successfully.\n");
+            perror("fork failed");
+            return 1;
         }
 
-        // assign the duplicate record check results to the response then send response to the client
-        int response = is_record_duplicate;
-        write(new_socket, &response, sizeof(response));
-
-        // close connection
+        // close connection in the parent process
         close(new_socket);
     }
 
     fclose(fp);
     return 0;
 }
+

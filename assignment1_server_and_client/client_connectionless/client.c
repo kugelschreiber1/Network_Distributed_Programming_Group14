@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -26,7 +27,7 @@ int main(int argc, char *argv[])
     int sock = 0;
     struct sockaddr_in serv_addr;
 
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
     {
         printf("Socket creation error\n");
         return 1;
@@ -43,13 +44,6 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-// connect to server
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
-    {
-        printf("Connection failed\n");
-        return 1;
-    }
-
 // prompt user for record details
 // space before the format specifier '%[^\n]' is necessary
     struct Record new_record;
@@ -62,11 +56,13 @@ int main(int argc, char *argv[])
 
 
 // send record to server
-    write(sock, &new_record, sizeof(new_record));
+    sendto(sock, &new_record, sizeof(new_record), 0, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
 // wait for response
     int response;
-    read(sock, &response, sizeof(response));
+    struct sockaddr_in recv_addr;
+    socklen_t addr_len = sizeof(recv_addr);
+    recvfrom(sock, &response, sizeof(response), 0, (struct sockaddr *)&recv_addr, &addr_len);
     if (response == 1)
     {
         printf("Duplicate record found! Record not saved.\n");
@@ -76,6 +72,5 @@ int main(int argc, char *argv[])
         printf("Record saved successfully.\n");
     }
 
-    close(sock);
     return 0;
 }

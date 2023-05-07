@@ -1,16 +1,17 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <arpa/inet.h>
+#include <stdio.h>             // Standard input/output functions
+#include <stdlib.h>            // Standard library functions
+#include <string.h>            // String manipulation functions
+#include <sys/socket.h>        // Socket functions
+#include <netinet/in.h>        // Internet address family functions
+#include <netdb.h>             // Hostname lookup functions
+#include <arpa/inet.h>         // Functions for manipulating IP addresses
 
-#define BUFFER_SIZE 1024
+
+#define BUFFER_SIZE 1024        // Maximum size of the buffer used for sending and receiving data
 
 int main()
 {    
-    char url[1024];
+    char url[1024];             
     printf("Enter the URL of the web page you want to retrieve: \n");
     fgets(url, 1024, stdin);
 

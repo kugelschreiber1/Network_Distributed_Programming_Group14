@@ -1,0 +1,7 @@
+SerialNo	RegistrationNo	Name
+1	P12/0001/2020	Mark Omollo
+2	P12/0002/2020	Anthony David
+3	P12/0003/2020	John Kiptoo
+4	P12/0004/2020	Agnes Nduku
+5	P12/0005/2020	Grace Wamboi
+6	P12/0006/2020	Martin Mwadime

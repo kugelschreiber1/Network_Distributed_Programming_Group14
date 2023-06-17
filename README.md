@@ -1,38 +1,69 @@
 # NETWORK AND DISTRIBUTED PROGRAMMING COURSE WORK
-This repository holds the work for Group 14
+This repository holds the work for Group 14 coursework project
+The project was implemented in the C programming language
 
-## NOTE:
-Should a group member want to contribute then please create your own branch and push there
-Do not push changes to the main branch directly
-
-## HOW TO RUN THE SERVER_CLIENT PROGRAM IN ASSIGNMENT 1[assignment1_server_and_client]	
+## HOW TO RUN THE REGISTRATION PROGRAM 	
 ### 1.Navigate to the 'server' directory and run the following command in a terminal window
 	
-	```
-	./server server_port
-	```
+	```c
 	
+	./server
+	
+	```
 ### 2.Navigate to the 'client' directory and run the following command in a new terminal window
 
+	```c
+	
+	./client
+	 
 	```
-	./client ip_address server_port
-	```
-
 ### 3.Follow the prompts in the client window
-### 4.The data will be saved in the 'records.txt' file
-### 5.Open the file to confirm if the details were saved
+### 4.The data will be saved in the 'student.txt' file
+### 5.Open the file to confirm if the details were saved correctly
 
-## HOW TO RUN THE SERVER_CLIENT PROGRAM IN ASSIGNMENT 2[assignment2_two_numbers]	
+
+## HOW TO RUN THE CALCULATOR PROGRAM
 ### 1.Navigate to the 'server' directory and run the following command in a terminal window
 
-	```
+	```c
+	
 	./server
+	
 	```
-### 2.Navigate to the 'ckient' directory and run the following command in a terminal window
+### 2.Navigate to the 'client' directory and run the following command in a terminal window
 
-	```
+	```c
+	
 	./client
-
+	
+	```
 ### 3.Follow the instructions on the client window
 
-# NOTE: ASSIGNMENT 1 IS NOT COMPLETE
+
+## HOW TO RUN THE BROWSER PROGRAM
+### 1.Navigate to the 'browser' directory and run the following command in a terminal window
+
+	```c
+	
+	./web_client
+	
+	```
+### 2.Follow the instructions on the web client window
+
+
+## HOW TO RUN THE RPC PROGRAM
+### 1.Navigate to the 'server' directory and run the following command in a terminal window
+
+	```c
+	
+	./server
+	
+	```
+### 2.Navigate to the 'client' directory and run the following command in a terminal window
+
+	```c
+	
+	./client
+	
+	```
+### 3.Follow the instructions on the client window

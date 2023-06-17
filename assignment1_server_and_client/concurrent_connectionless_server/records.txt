@@ -1,1 +1,0 @@
-SNo	AdmissionNo	Name

@@ -1,3 +1,0 @@
-SNo	AdmissionNo	Name
-1	P12/1234/2020	Mark Ruffalo
-2	P12/3859/2020	John Travolta
